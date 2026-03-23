@@ -49,7 +49,7 @@ function TextGenerateEffect({
       ref={localRef}
       {...(props as any)}
     >
-      <motion.div ref={scope}>
+      <motion.div ref={scope} suppressHydrationWarning>
         {wordsArray.map((word, idx) => (
           <motion.span
             className="opacity-0 will-change-transform will-change-opacity will-change-filter"
