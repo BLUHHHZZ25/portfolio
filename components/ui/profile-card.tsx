@@ -43,21 +43,24 @@ function Sparkline({ data }: { data: number[] }) {
 
 export default function ProfileCard() {
   const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div
       style={{
         minHeight: "auto",
-        backgroundColor: "#070b18",
+        backgroundColor: "var(--background)",
         display: "flex",
-        // alignItems: "center",
-        // justifyContent: "center",
         fontFamily: "'DM Sans', sans-serif",
-        // padding: "2rem",
       }}
     >
       {/* Google Fonts */}
@@ -106,10 +109,13 @@ export default function ProfileCard() {
           position: "relative",
           width: 320,
           borderRadius: 24,
-          border: "1px solid rgba(255,255,255,0.08)",
-          background: "linear-gradient(160deg,#1a1f35 0%,#0d1120 100%)",
-          boxShadow:
-            "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset",
+          border: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)",
+          background: isDark
+            ? "linear-gradient(160deg,#1a1f35 0%,#0d1120 100%)"
+            : "linear-gradient(160deg,#f8fafc 0%,#e2e8f0 100%)",
+          boxShadow: isDark
+            ? "0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset"
+            : "0 32px 80px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.03) inset",
           overflow: "hidden",
         }}
       >
@@ -183,10 +189,10 @@ export default function ProfileCard() {
               position: "absolute",
               bottom: 14,
               right: 14,
-              background: "rgba(12,16,28,0.82)",
+              background: isDark ? "rgba(12,16,28,0.82)" : "rgba(255,255,255,0.9)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              border: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)",
               borderRadius: 12,
               padding: "9px 12px",
               display: "flex",
@@ -215,10 +221,10 @@ export default function ProfileCard() {
 
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: "#fff", lineHeight: 1 }}>4.9</span>
+                <span style={{ fontSize: 18, fontWeight: 700, color: isDark ? "#fff" : "#0f172a", lineHeight: 1 }}>4.9</span>
                 <span style={{ color: "#f59e0b", fontSize: 13, lineHeight: 1 }}>★</span>
               </div>
-              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.45)", letterSpacing: "0.07em", textTransform: "uppercase", marginTop: 2 }}>
+              <div style={{ fontSize: 9, color: isDark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.45)", letterSpacing: "0.07em", textTransform: "uppercase", marginTop: 2 }}>
                 Client Satisfaction
               </div>
             </div>

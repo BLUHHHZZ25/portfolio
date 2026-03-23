@@ -2,6 +2,7 @@ import { Navbar } from "@/components/sections/navbar"
 import { Hero } from "@/components/sections/hero"
 import { Experience } from "@/components/sections/experience"
 import { Skills } from "@/components/sections/skills"
+import { Projects } from "@/components/sections/projects"
 import { Education } from "@/components/sections/education"
 import { Contact } from "@/components/sections/contact"
 import { Footer } from "@/components/sections/footer"
@@ -16,6 +17,7 @@ export default function Page() {
         <Hero />
         <Experience />
         <Skills />
+        <Projects />
         <Education />
         <Contact />
       </main>

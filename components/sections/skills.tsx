@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import { portfolioData } from "@/app/data"
 import { svgs } from "@/public/svgs"
 
@@ -29,8 +30,36 @@ const iconMap: Record<string, string> = {
 
 const allSkills = Object.values(portfolioData.skills).flat()
 
+function useIsDark() {
+  const [isDark, setIsDark] = useState(false)
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
+  return isDark
+}
+
 function SkillCard({ skill }: { skill: string }) {
   const icon = iconMap[skill]
+  const isDark = useIsDark()
+
+  const bg = isDark
+    ? "linear-gradient(160deg,#1a1f35 0%,#0d1120 100%)"
+    : "linear-gradient(160deg,#f8fafc 0%,#ffffff 100%)"
+  const border = isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)"
+  const shadow = isDark
+    ? "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset"
+    : "0 8px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03) inset"
+  const shadowHover = isDark
+    ? "0 16px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1) inset"
+    : "0 16px 32px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.06) inset"
+  const labelColor = isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.55)"
+  const fallbackBg = isDark ? "linear-gradient(135deg,#1a1f35,#2a3050)" : "linear-gradient(135deg,#e2e8f0,#f1f5f9)"
+  const fallbackBorder = isDark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.1)"
+  const fallbackColor = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)"
 
   return (
     <div
@@ -38,9 +67,9 @@ function SkillCard({ skill }: { skill: string }) {
         width: 88,
         height: 88,
         borderRadius: 16,
-        border: "1px solid rgba(255,255,255,0.08)",
-        background: "linear-gradient(160deg,#1a1f35 0%,#0d1120 100%)",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset",
+        border,
+        background: bg,
+        boxShadow: shadow,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -52,13 +81,11 @@ function SkillCard({ skill }: { skill: string }) {
       }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLDivElement).style.transform = "translateY(-3px)"
-        ;(e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 16px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1) inset"
+        ;(e.currentTarget as HTMLDivElement).style.boxShadow = shadowHover
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"
-        ;(e.currentTarget as HTMLDivElement).style.boxShadow =
-          "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset"
+        ;(e.currentTarget as HTMLDivElement).style.boxShadow = shadow
       }}
     >
       {icon ? (
@@ -69,14 +96,14 @@ function SkillCard({ skill }: { skill: string }) {
             width: 30,
             height: 30,
             borderRadius: 8,
-            background: "linear-gradient(135deg,#1a1f35,#2a3050)",
-            border: "1px solid rgba(255,255,255,0.12)",
+            background: fallbackBg,
+            border: fallbackBorder,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: 11,
             fontWeight: 700,
-            color: "rgba(255,255,255,0.7)",
+            color: fallbackColor,
           }}
         >
           {skill.slice(0, 2).toUpperCase()}
@@ -86,7 +113,7 @@ function SkillCard({ skill }: { skill: string }) {
         style={{
           fontSize: 10,
           fontWeight: 500,
-          color: "rgba(255,255,255,0.55)",
+          color: labelColor,
           textAlign: "center",
           lineHeight: 1.2,
           padding: "0 6px",

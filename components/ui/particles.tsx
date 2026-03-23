@@ -39,6 +39,8 @@ export interface ParticlesProps {
   size?: number
   refresh?: boolean
   color?: string
+  darkColor?: string
+  lightColor?: string
   vx?: number
   vy?: number
 }
@@ -68,10 +70,21 @@ export const Particles: React.FC<ParticlesProps> = ({
   ease = 50,
   size = 0.4,
   refresh = false,
-  color = "#ffffff",
+  color,
+  darkColor = "#ffffff",
+  lightColor = "#1e293b",
   vx = 0,
   vy = 0,
 }) => {
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const canvasContainerRef = useRef<HTMLDivElement>(null)
   const context = useRef<CanvasRenderingContext2D | null>(null)
@@ -81,6 +94,8 @@ export const Particles: React.FC<ParticlesProps> = ({
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 })
   const animationRef = useRef<number>(0)
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1
+
+  const activeColor = color ?? (isDark ? darkColor : lightColor)
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -96,7 +111,7 @@ export const Particles: React.FC<ParticlesProps> = ({
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [color])
+  }, [activeColor])
 
   useEffect(() => {
     onMouseMove()
@@ -176,15 +191,13 @@ export const Particles: React.FC<ParticlesProps> = ({
     }
   }
 
-  const rgb = hexToRgb(color)
-
   const drawCircle = (circle: Circle, update = false) => {
     if (context.current) {
       const { x, y, translateX, translateY, size, alpha } = circle
       context.current.translate(translateX, translateY)
       context.current.beginPath()
       context.current.arc(x, y, size, 0, 2 * Math.PI)
-      context.current.fillStyle = `rgba(${rgb.join(", ")}, ${alpha})`
+      context.current.fillStyle = `rgba(${hexToRgb(activeColor).join(", ")}, ${alpha})`
       context.current.fill()
       context.current.setTransform(dpr, 0, 0, dpr, 0, 0)
 
