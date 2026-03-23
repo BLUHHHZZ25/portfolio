@@ -5,6 +5,12 @@ export const portfolioData = {
   email: "rogermooresangol@gmail.com",
   phone: "+639935171690",
   calendly: "https://calendly.com/rogermooresangol",
+  social: {
+    github:    "https://github.com/rogermooresangol",
+    linkedin:  "https://linkedin.com/in/rogermooresangol",
+    facebook:  "https://facebook.com/rogermooresangol",
+    instagram: "https://instagram.com/rogermooresangol",
+  },
   bio: "Full-Stack Developer specializing in React Native, Next.js, and cloud-based microservices. I build scalable mobile and web applications with a focus on real-world impact — from in-app payment systems to real-time tracking solutions.",
 
   experience: [

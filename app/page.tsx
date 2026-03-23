@@ -5,12 +5,14 @@ import { Skills } from "@/components/sections/skills"
 import { Education } from "@/components/sections/education"
 import { Contact } from "@/components/sections/contact"
 import { Footer } from "@/components/sections/footer"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function Page() {
   return (
     <>
       <Navbar />
       <main>
+        <SpeedInsights/>
         <Hero />
         <Experience />
         <Skills />
