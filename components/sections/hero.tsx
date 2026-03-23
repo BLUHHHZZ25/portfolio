@@ -12,7 +12,7 @@ export function Hero() {
   return (
     <Particles quantity={400} color="#ffffff">
       <section id="about" className="min-h-screen flex items-center pt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16 md:py-24 w-full flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 md:py-24 w-full flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24">
             <div className="space-y-6 order-2 md:order-1">
               <div className="space-y-1">
                 <p className="text-sm font-mono text-[var(--primary)] tracking-widest uppercase">

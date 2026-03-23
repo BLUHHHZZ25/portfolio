@@ -7,13 +7,13 @@ import { Separator } from "@/components/ui/separator"
 export function Experience() {
   return (
     <section id="experience" className="py-24">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
           <p className="text-sm font-mono text-[var(--primary)] tracking-widest uppercase mb-2">Career</p>
           <h2 className="text-3xl font-bold tracking-tight">Work Experience</h2>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-1 gap-5 md:flex flex-rowf md:gap-5">
           {portfolioData.experience.map((job, i) => (
             <Card key={i}>
               <CardHeader className="pb-3">

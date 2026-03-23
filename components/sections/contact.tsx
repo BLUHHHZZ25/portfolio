@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card"
 export function Contact() {
   return (
     <section id="contact" className="py-24 bg-[var(--muted)]/40">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
           <p className="text-sm font-mono text-[var(--primary)] tracking-widest uppercase mb-2">Reach out</p>
           <h2 className="text-3xl font-bold tracking-tight">Contact</h2>
