@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { images } from "@/public/images";
 
 // Sparkline data for the revenue chart
 const sparkData = [30, 45, 28, 60, 42, 70, 55, 80, 65, 90];
@@ -125,7 +126,7 @@ export default function ProfileCard() {
         >
           {/* Replace src with your actual image */}
           <img
-            src="https://fmblbxbwvaemmzhuiwou.supabase.co/storage/v1/object/public/portfolio/625073464_18122104645571381_7275390027139124944_n.webp"
+            src={images.profile}
             alt="Profile"
             style={{
               width: "100%",
