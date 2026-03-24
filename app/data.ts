@@ -12,7 +12,7 @@ export const portfolioData = {
     facebook:  "https://www.facebook.com/roger.sangol/",
     instagram: "https://www.instagram.com/_murrzzz/?hl=en",
   },
-  bio: "Full-Stack Developer specializing in React Native, Next.js, and cloud-based microservices. I build scalable mobile and web applications with a focus on real-world impact — from in-app payment systems to real-time tracking solutions.",
+  bio: "Full-Stack Developer specializing in React Native, Next.js, and cloud-based microservices. I create scalable, high-performance mobile and web applications with a strong focus on user experience and practical solutions. I also build websites using WordPress, Elementor, and other modern website builders.",
 
   experience: [
     {
