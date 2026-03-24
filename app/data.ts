@@ -1,16 +1,16 @@
 export const portfolioData = {
   name: "Roger Moore A. Sangol",
   title: "Full-Stack Developer",
-  location: "Bagong Silang, Caloocan",
+  location: "Philippines Bagong Silang, Caloocan City",
   email: "rogermooresangol@gmail.com",
   phone: "+639935171690",
   calendly: "https://calendly.com/rogermooresangol",
-  resume: "/resume.pdf",
+  resume: "https://fmblbxbwvaemmzhuiwou.supabase.co/storage/v1/object/public/portfolio/roger_2026.pdf",
   social: {
-    github:    "https://github.com/rogermooresangol",
-    linkedin:  "https://linkedin.com/in/rogermooresangol",
-    facebook:  "https://facebook.com/rogermooresangol",
-    instagram: "https://instagram.com/rogermooresangol",
+    github:    "https://github.com/BLUHHHZZ25",
+    linkedin:  "https://www.linkedin.com/in/roger-moore-sangol-885520275/",
+    facebook:  "https://www.facebook.com/roger.sangol/",
+    instagram: "https://www.instagram.com/_murrzzz/?hl=en",
   },
   bio: "Full-Stack Developer specializing in React Native, Next.js, and cloud-based microservices. I build scalable mobile and web applications with a focus on real-world impact — from in-app payment systems to real-time tracking solutions.",
 
