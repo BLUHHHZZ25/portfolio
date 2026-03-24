@@ -4,31 +4,35 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { portfolioData } from "@/app/data"
 import { svgs } from "@/public/svgs"
+import { Card, CardContent } from "@/components/ui/card"
 
 const iconMap: Record<string, string> = {
-  JavaScript:    svgs.javascript,
-  TypeScript:    svgs.typescript,
-  Python:        svgs.python,
-  React:         svgs.react,
+  JavaScript:     svgs.javascript,
+  TypeScript:     svgs.typescript,
+  Python:         svgs.python,
+  React:          svgs.react,
   "React Native": svgs.react,
-  "Next.js":     svgs.nextjs,
-  HTML5:         svgs.html5,
-  CSS:           svgs.css3,
-  TailwindCSS:   svgs.tailwindcss,
-  Bootstrap:     svgs.bootstrap,
-  jQuery:        svgs.jquery,
-  "Node.js":     svgs.nodejs,
-  "Express.js":  svgs.express,
-  FastAPI:       svgs.fastapi,
-  PostgreSQL:    svgs.postgresql,
-  MySQL:         svgs.mysql,
-  Jest:          svgs.jest,
-  Redux:         svgs.redux,
-  WordPress:     svgs.wordpress,
-  Webflow:       svgs.webflow,
+  "Next.js":      svgs.nextjs,
+  HTML5:          svgs.html5,
+  CSS:            svgs.css3,
+  TailwindCSS:    svgs.tailwindcss,
+  Bootstrap:      svgs.bootstrap,
+  jQuery:         svgs.jquery,
+  "Node.js":      svgs.nodejs,
+  "Express.js":   svgs.express,
+  FastAPI:        svgs.fastapi,
+  PostgreSQL:     svgs.postgresql,
+  MySQL:          svgs.mysql,
+  Jest:           svgs.jest,
+  Redux:          svgs.redux,
+  Zustand:        svgs.zustand,
+  WordPress:      svgs.wordpress,
+  Webflow:        svgs.webflow,
+  PHP:            svgs.php,
+  Supabase:       svgs.supabase,
+  Firebase:       svgs.firebase,
+  Cloudflare:     svgs.cloudflare,
 }
-
-const allSkills = Object.values(portfolioData.skills).flat()
 
 function useIsDark() {
   const [isDark, setIsDark] = useState(false)
@@ -42,7 +46,7 @@ function useIsDark() {
   return isDark
 }
 
-function SkillCard({ skill }: { skill: string }) {
+function SkillCard({ skill, index }: { skill: string; index: number }) {
   const icon = iconMap[skill]
   const isDark = useIsDark()
 
@@ -63,9 +67,11 @@ function SkillCard({ skill }: { skill: string }) {
 
   return (
     <div
+      className="skill-card-anim"
       style={{
-        width: 88,
-        height: 88,
+        animationDelay: `${index * 35}ms`,
+        width: 80,
+        height: 80,
         borderRadius: 16,
         border,
         background: bg,
@@ -74,7 +80,7 @@ function SkillCard({ skill }: { skill: string }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 8,
+        gap: 7,
         cursor: "default",
         fontFamily: "'DM Sans', sans-serif",
         transition: "transform 0.2s ease, box-shadow 0.2s ease",
@@ -89,19 +95,19 @@ function SkillCard({ skill }: { skill: string }) {
       }}
     >
       {icon ? (
-        <Image src={icon} alt={skill} width={30} height={30} unoptimized />
+        <Image src={icon} alt={skill} width={28} height={28} unoptimized />
       ) : (
         <div
           style={{
-            width: 30,
-            height: 30,
+            width: 28,
+            height: 28,
             borderRadius: 8,
             background: fallbackBg,
             border: fallbackBorder,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: 700,
             color: fallbackColor,
           }}
@@ -116,7 +122,7 @@ function SkillCard({ skill }: { skill: string }) {
           color: labelColor,
           textAlign: "center",
           lineHeight: 1.2,
-          padding: "0 6px",
+          padding: "0 5px",
         }}
       >
         {skill}
@@ -125,7 +131,27 @@ function SkillCard({ skill }: { skill: string }) {
   )
 }
 
+function CategoryCard({ category, skills, startIndex }: { category: string; skills: string[]; startIndex: number }) {
+  return (
+    <Card className="h-full">
+      <CardContent className="p-5 sm:p-6">
+        <p className="text-xs font-mono text-[var(--primary)] uppercase tracking-widest mb-4 pb-2 border-b border-[var(--border)]">
+          {category}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {skills.map((skill, i) => (
+            <SkillCard key={skill} skill={skill} index={startIndex + i} />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
 export function Skills() {
+  const categories = Object.entries(portfolioData.skills)
+  let globalIndex = 0
+
   return (
     <section id="skills" className="py-24 bg-[var(--muted)]/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -144,16 +170,20 @@ export function Skills() {
             animation: skillFadeUp 0.5s ease both;
           }
         `}</style>
-        <div className="flex flex-wrap gap-3">
-          {allSkills.map((skill, i) => (
-            <div
-              key={skill}
-              className="skill-card-anim"
-              style={{ animationDelay: `${i * 40}ms` }}
-            >
-              <SkillCard skill={skill} />
-            </div>
-          ))}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categories.map(([category, skills]) => {
+            const start = globalIndex
+            globalIndex += skills.length
+            return (
+              <CategoryCard
+                key={category}
+                category={category}
+                skills={skills}
+                startIndex={start}
+              />
+            )
+          })}
         </div>
       </div>
     </section>

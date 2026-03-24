@@ -18,6 +18,11 @@ export const svgs = {
   mysql:       `${BASE}/mysql/mysql-original.svg`,
   jest:        `${BASE}/jest/jest-plain.svg`,
   redux:       `${BASE}/redux/redux-original.svg`,
+  zustand:     `${BASE}/zustand/zustand-original.svg`,
+  supabase:    `${BASE}/supabase/supabase-original.svg`,
+  firebase:    `${BASE}/firebase/firebase-original.svg`,
+  cloudflare:  `${BASE}/cloudflare/cloudflare-original.svg`,
+  php:         `${BASE}/php/php-original.svg`,
   wordpress:   `${BASE}/wordpress/wordpress-plain.svg`,
   webflow:     `${BASE}/webflow/webflow-original.svg`,
 } as const

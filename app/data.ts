@@ -102,11 +102,11 @@ export const portfolioData = {
   ],
 
   skills: {
-    Languages: ["JavaScript", "TypeScript", "Python"],
+    Languages: ["JavaScript", "TypeScript", "Python", "PHP"],
     Frontend: ["React", "React Native", "Next.js", "HTML5", "CSS", "TailwindCSS", "Bootstrap", "jQuery"],
     Backend: ["Node.js", "Express.js", "FastAPI"],
-    Databases: ["PostgreSQL", "MySQL", "WatermelonDB"],
-    "Tools & Cloud": ["AWS (EC2, S3)", "Jest", "Redux", "JWT"],
-    "CMS & Builders": ["WordPress", "Elementor", "Duda", "Webflow"],
+    Databases: ["PostgreSQL", "MySQL", "WatermelonDB", "Supabase", "Firebase"],
+    "Tools & Cloud": ["AWS (EC2, S3)", "Jest", "Redux", "Zustand", "JWT", "Cloudflare", "Hostinger"],
+    "CMS & Builders": ["WordPress", "Elementor", "Duda", "Webflow", "Wix"],
   },
 }
