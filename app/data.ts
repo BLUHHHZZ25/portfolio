@@ -65,7 +65,7 @@ export const portfolioData = {
         "A full-featured ride-hailing platform with real-time rider tracking, route polylines via Google Maps, and a closed-loop in-app wallet supporting UnionBank and PayMongo cash-in/out transactions.",
       image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80",
       stack: ["React Native", "TypeScript", "Redux", "FastAPI", "AWS", "PostgreSQL"],
-      link: "#",
+      link: "https://play.google.com/store/apps/details?id=com.rapidoo_riderapp.production",
     },
     {
       title: "eCommerce & Business Websites",
@@ -76,28 +76,28 @@ export const portfolioData = {
       link: "#",
     },
     {
-      title: "In-App Wallet & Payment System",
+      title: "Juan Cafe Point of Sale",
       description:
-        "Closed-loop digital wallet integrated into a ride-hailing super app. Supports cash-in via UnionBank, cash-out via PayMongo, and peer transfers — all secured with JWT-based auth and audit logging.",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      stack: ["FastAPI", "Python", "PostgreSQL", "JWT", "AWS"],
-      link: "#",
-    },
-    {
-      title: "Real-Time Tracking Dashboard",
-      description:
-        "Operations dashboard for monitoring live rider locations with route polylines, ETA calculations, and status updates powered by Google Maps Directions API and WebSockets.",
-      image: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80",
-      stack: ["React", "Node.js", "Google Maps API", "TypeScript", "Express.js"],
-      link: "#",
+        "Built a cloud-based Point-of-Sale (POS) system for a milk tea and coffee shop in the Philippines using Next.js, PostgreSQL, Tailwind CSS, and Supabase. The system streamlines order management, inventory tracking, and sales reporting, improving operational efficiency.",
+      image: "https://fmblbxbwvaemmzhuiwou.supabase.co/storage/v1/object/public/portfolio/juancafe.png",
+      stack: ["PostgreSQL", "Tailwind CSS", "Supabase", "Vercel", "Next.js"],
+      link: "https://cafe.murrzzz.xyz",
     },
     {
       title: "Portfolio Website",
       description:
         "This portfolio — built with Next.js 16 App Router, React 19, TailwindCSS v4, and Framer Motion. Features dark/light theming, animated particles, and a responsive layout optimized for all screen sizes.",
-      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
+      image: "https://fmblbxbwvaemmzhuiwou.supabase.co/storage/v1/object/public/portfolio/portfolio.png",
       stack: ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
-      link: "#",
+      link: "https://www.murrzzz.xyz",
+    },
+    {
+      title: "Ace Tech Electronics",
+      description:
+        "Developed a fully responsive business website using WordPress and Elementor for a local company in the Philippines. The site allows customers to easily book services and inquire about products for sale, helping the business streamline customer interactions and increase engagement.",
+      image: "https://fmblbxbwvaemmzhuiwou.supabase.co/storage/v1/object/public/portfolio/acetech.png",
+      stack: ["Wordpress", "Elementor", "CSS", "HTML"],
+      link: "https://upsavr.ph/",
     },
   ],
 
