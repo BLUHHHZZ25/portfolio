@@ -181,54 +181,6 @@ export default function ProfileCard() {
               />
             </svg>
           </button>
-
-          {/* ── Satisfaction Badge (bottom-right) ── */}
-          <div
-            className="badge-rating"
-            style={{
-              position: "absolute",
-              bottom: 14,
-              right: 14,
-              background: isDark ? "rgba(12,16,28,0.82)" : "rgba(255,255,255,0.9)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              border: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)",
-              borderRadius: 12,
-              padding: "9px 12px",
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            {/* Avatar-like icon */}
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: "50%",
-                background: "linear-gradient(135deg,#7c3aed,#a855f7)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <circle cx="8" cy="6" r="2.5" fill="rgba(255,255,255,0.9)" />
-                <path d="M3 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="rgba(255,255,255,0.9)" strokeWidth="1.2" strokeLinecap="round" />
-              </svg>
-            </div>
-
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: isDark ? "#fff" : "#0f172a", lineHeight: 1 }}>4.9</span>
-                <span style={{ color: "#f59e0b", fontSize: 13, lineHeight: 1 }}>★</span>
-              </div>
-              <div style={{ fontSize: 9, color: isDark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.45)", letterSpacing: "0.07em", textTransform: "uppercase", marginTop: 2 }}>
-                Client Satisfaction
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Bottom padding */}
