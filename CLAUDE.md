@@ -1,4 +1,8 @@
-# Portfolio – CLAUDE.md
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+# Portfolio
 
 ## Project Overview
 
@@ -24,11 +28,11 @@ Personal portfolio website for **Roger Moore A. Sangol**, Full-Stack Developer. 
 │   ├── sections/           # Page-specific, non-reusable
 │   │   ├── navbar.tsx      # Fixed nav with dark/light toggle + mobile hamburger menu
 │   │   ├── hero.tsx        # Hero with particles, profile card, social icons
-│   │   ├── experience.tsx
+│   │   ├── experience.tsx  # Renders BOTH work experience AND education
 │   │   ├── skills.tsx      # Flat skill cards with Devicon logos
 │   │   ├── projects.tsx    # Project cards with image, description, tech stack tags
-│   │   ├── education.tsx
-│   │   ├── contact.tsx
+│   │   ├── education.tsx   # ORPHANED — not imported anywhere; education lives in experience.tsx
+│   │   ├── contact.tsx     # Form + Calendly widget (loaded via next/script lazyOnload)
 │   │   └── footer.tsx
 │   │
 │   └── ui/                 # Reusable primitives
@@ -80,17 +84,16 @@ function useIsDark() {
 ## Section Order (page.tsx)
 
 1. `<Navbar />`
-2. `<Hero />` — about / intro
-3. `<Experience />`
+2. `<Hero />` — about / intro (wrapped in `<Particles>` canvas)
+3. `<Experience />` — renders work experience + education in one component
 4. `<Skills />`
 5. `<Projects />`
-6. `<Education />`
-7. `<Contact />`
-8. `<Footer />`
+6. `<Contact />`
+7. `<Footer />`
 
 ## Navbar Links
 
-About · Experience · Skills · Projects · Education · Contact
+About · Experience · Skills · Projects · Contact
 
 ## Commands
 
@@ -105,6 +108,15 @@ npm run lint     # Run ESLint
 
 - Single-page portfolio — no routing beyond `/`.
 - No backend, database, or API routes.
-- Deployment target: Vercel.
-- `next.config.ts` whitelists `cdn.jsdelivr.net` (Devicons) and `images.unsplash.com` for `next/image`.
+- Deployment target: Vercel. Uses `@vercel/speed-insights/next` mounted in `app/page.tsx`.
+- `next.config.ts` whitelists three hosts for `next/image`: `cdn.jsdelivr.net` (Devicons), `images.unsplash.com`, and `fmblbxbwvaemmzhuiwou.supabase.co` (resume PDF + project/profile images). AVIF/WebP formats enabled — if you add a new remote image host, add it to `remotePatterns`.
 - `public/svgs/index.ts` and `public/images/index.ts` are TypeScript modules imported by components, not static assets served by Next.js.
+- Fonts: DM Sans is loaded via `next/font/google` in `app/layout.tsx` and exposed as the `--font-dm-sans` CSS variable. Do NOT re-introduce `@import url('...fonts.googleapis.com...')` inside inline `<style>` tags — they are render-blocking and duplicate the font load.
+
+## Performance gotchas (learned the hard way)
+
+- **Never pass `unoptimized` to `next/image`** in projects/skills/profile cards unless there's a specific reason — it bypasses AVIF/WebP conversion, sizing, and caching and is the main way this site has regressed in the past.
+- **Keep `<Particles quantity>` ≤ ~100.** The canvas animation in `hero.tsx` runs in `requestAnimationFrame`; large counts tank INP/TBT.
+- **Mouse tracking in `particles.tsx` must use refs, not React state.** Using `useState` for mouse position re-renders the whole Particles tree on every `mousemove` and causes severe jank.
+- **Hoist `useIsDark()` to the top of a section.** In `skills.tsx`, calling it inside each card previously created N `MutationObserver`s — hoist to the section root and pass `isDark` down as a prop.
+- **Only use `"use client"` when a component actually has client state/effects.** `experience.tsx` and `footer.tsx` are server components — don't add the directive back.

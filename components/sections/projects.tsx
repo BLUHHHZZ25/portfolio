@@ -1,137 +1,114 @@
-"use client"
-
 import Image from "next/image"
-import { useEffect, useState } from "react"
 import { ExternalLink } from "lucide-react"
 import { portfolioData } from "@/app/data"
-
-function useIsDark() {
-  const [isDark, setIsDark] = useState(false)
-  useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains("dark"))
-    check()
-    const observer = new MutationObserver(check)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-    return () => observer.disconnect()
-  }, [])
-  return isDark
-}
+import { SurfaceCard } from "@/components/ui/surface-card"
+import { SectionHeading } from "@/components/ui/section-heading"
 
 export function Projects() {
-  const isDark = useIsDark()
+  const [featured, ...rest] = portfolioData.projects
 
   return (
     <section id="projects" className="py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="mb-12">
-          <p className="text-sm font-mono text-[var(--primary)] tracking-widest uppercase mb-2">Work</p>
-          <h2 className="text-3xl font-bold tracking-tight">Projects</h2>
-        </div>
+        <SectionHeading
+          eyebrow="Work"
+          title="Projects"
+          description="A selection of products, freelance builds, and experiments shipped over the past few years."
+        />
 
+        {/* Featured */}
+        {featured && (
+          <SurfaceCard
+            as="article"
+            className="grid grid-cols-1 md:grid-cols-5 mb-6 group"
+            hover={false}
+          >
+            <div className="relative md:col-span-3 h-64 md:h-auto overflow-hidden">
+              <Image
+                src={featured.image}
+                alt={`${featured.title} — ${featured.stack.slice(0, 3).join(", ")} project screenshot`}
+                fill
+                sizes="(max-width: 768px) 100vw, 60vw"
+                priority={false}
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <span className="absolute top-4 left-4 text-[10px] font-mono tracking-widest uppercase px-2.5 py-1 rounded-full bg-[var(--background)]/80 backdrop-blur border border-[var(--border)]">
+                Featured
+              </span>
+            </div>
+            <div className="md:col-span-2 p-6 md:p-8 flex flex-col justify-center gap-4">
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="text-xl font-bold leading-tight">{featured.title}</h3>
+                <a
+                  href={featured.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${featured.title}`}
+                  className="text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors shrink-0 mt-1"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+              <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
+                {featured.description}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {featured.stack.map(tech => (
+                  <span
+                    key={tech}
+                    className="text-[11px] font-medium px-2.5 py-1 rounded-full border border-[var(--border)] bg-[var(--muted)]/50 text-[var(--muted-foreground)]"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </SurfaceCard>
+        )}
+
+        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {portfolioData.projects.map((project) => (
-            <div
-              key={project.title}
-              style={{
-                borderRadius: 20,
-                border: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)",
-                background: isDark
-                  ? "linear-gradient(160deg,#1a1f35 0%,#0d1120 100%)"
-                  : "linear-gradient(160deg,#f8fafc 0%,#ffffff 100%)",
-                boxShadow: isDark
-                  ? "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset"
-                  : "0 8px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03) inset",
-                overflow: "hidden",
-                fontFamily: "'DM Sans', sans-serif",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"
-                ;(e.currentTarget as HTMLDivElement).style.boxShadow = isDark
-                  ? "0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08) inset"
-                  : "0 20px 40px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.06) inset"
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"
-                ;(e.currentTarget as HTMLDivElement).style.boxShadow = isDark
-                  ? "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset"
-                  : "0 8px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03) inset"
-              }}
-            >
-              {/* Image */}
+          {rest.map(project => (
+            <SurfaceCard key={project.title} as="article" className="group flex flex-col">
               <div className="relative w-full h-48 overflow-hidden">
                 <Image
                   src={project.image}
-                  alt={project.title}
+                  alt={`${project.title} — ${project.stack.slice(0, 3).join(", ")} project screenshot`}
                   fill
-                  className="object-cover"
-                  unoptimized
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  loading="lazy"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: isDark
-                      ? "linear-gradient(to bottom, transparent 50%, #0d1120 100%)"
-                      : "linear-gradient(to bottom, transparent 50%, #f8fafc 100%)",
-                  }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--background)]/60 to-transparent" />
               </div>
-
-              {/* Content */}
-              <div className="p-6 space-y-3">
+              <div className="p-6 space-y-3 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-3">
-                  <h3
-                    style={{
-                      fontSize: 18,
-                      fontWeight: 700,
-                      color: isDark ? "#e2e8f0" : "#0f172a",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {project.title}
-                  </h3>
+                  <h3 className="text-lg font-bold leading-tight">{project.title}</h3>
                   <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.35)", flexShrink: 0 }}
-                    className="hover:text-[var(--primary)] transition-colors mt-0.5"
+                    aria-label={`Open ${project.title}`}
+                    className="text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors shrink-0 mt-0.5"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
-
-                <p
-                  style={{
-                    fontSize: 14,
-                    lineHeight: 1.65,
-                    color: isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.55)",
-                  }}
-                >
+                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed flex-1">
                   {project.description}
                 </p>
-
-                {/* Tech stack tags */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {project.stack.map((tech) => (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {project.stack.map(tech => (
                     <span
                       key={tech}
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 500,
-                        padding: "3px 10px",
-                        borderRadius: 999,
-                        border: isDark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)",
-                        background: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-                        color: isDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)",
-                      }}
+                      className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[var(--border)] bg-[var(--muted)]/50 text-[var(--muted-foreground)]"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
+            </SurfaceCard>
           ))}
         </div>
       </div>

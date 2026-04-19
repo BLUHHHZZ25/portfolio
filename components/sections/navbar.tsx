@@ -1,24 +1,24 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Download, Menu, Moon, Sun, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { portfolioData } from "@/app/data"
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "#about", id: "about" },
+  { label: "Experience", href: "#experience", id: "experience" },
+  { label: "Skills", href: "#skills", id: "skills" },
+  { label: "Projects", href: "#projects", id: "projects" },
+  { label: "Contact", href: "#contact", id: "contact" },
 ]
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [dark, setDark] = useState(false)
+  const [activeId, setActiveId] = useState<string>("about")
 
-  // Init theme from localStorage or system preference
   useEffect(() => {
     const stored = localStorage.getItem("theme")
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -38,14 +38,37 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener("scroll", onScroll)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth >= 640) setMenuOpen(false) }
+    const onResize = () => {
+      if (window.innerWidth >= 640) setMenuOpen(false)
+    }
     window.addEventListener("resize", onResize)
     return () => window.removeEventListener("resize", onResize)
+  }, [])
+
+  // Scroll-spy
+  useEffect(() => {
+    const sections = navLinks
+      .map(l => document.getElementById(l.id))
+      .filter((el): el is HTMLElement => el !== null)
+    if (sections.length === 0) return
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (visible?.target.id) setActiveId(visible.target.id)
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    )
+    sections.forEach(s => observer.observe(s))
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -54,52 +77,61 @@ export function Navbar() {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled || menuOpen
           ? "bg-[var(--background)]/80 backdrop-blur border-b border-[var(--border)] shadow-sm"
-          : "bg-transparent"
+          : "bg-transparent",
       )}
     >
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="font-mono text-sm font-semibold tracking-tight">
-          roger<span className="text-[var(--primary)]">.</span>dev
-        </span>
+        <a href="#about" className="flex items-center gap-2" aria-label="Home">
+          <span
+            aria-hidden="true"
+            className="w-7 h-7 rounded-lg brand-gradient-bg flex items-center justify-center text-white text-[11px] font-bold font-mono"
+          >
+            R
+          </span>
+          <span className="font-mono text-sm font-semibold tracking-tight">
+            roger<span className="brand-gradient-text">.dev</span>
+          </span>
+        </a>
 
         {/* Desktop links */}
-        <ul className="hidden sm:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+        <ul className="hidden sm:flex items-center gap-1">
+          {navLinks.map(link => {
+            const isActive = activeId === link.id
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "relative text-sm px-3 py-1.5 rounded-md transition-colors",
+                    isActive
+                      ? "text-[var(--foreground)]"
+                      : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]",
+                  )}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full brand-gradient-bg"
+                    />
+                  )}
+                </a>
+              </li>
+            )
+          })}
         </ul>
 
         <div className="flex items-center gap-2">
-          {/* Download Resume — desktop */}
           <a
             href={portfolioData.resume}
             download
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-opacity hover:opacity-80"
-            style={{
-              background: "linear-gradient(90deg,#3b82f6,#a855f7,#ec4899,#a855f7,#3b82f6)",
-              backgroundSize: "200% 100%",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              border: "1px solid transparent",
-              backgroundOrigin: "border-box",
-              boxShadow: "inset 0 0 0 1px transparent",
-              outline: "1px solid #a855f7",
-              outlineOffset: "-1px",
-            }}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-white brand-gradient-bg shadow-sm hover:opacity-90 transition-opacity"
           >
-            <Download className="w-3.5 h-3.5" style={{ color: "#a855f7" }} />
+            <Download className="w-3.5 h-3.5" />
             Resume
           </a>
 
-          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -108,46 +140,47 @@ export function Navbar() {
             {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
-          {/* Mobile hamburger */}
           <button
             className="sm:hidden p-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-            onClick={() => setMenuOpen((prev) => !prev)}
+            onClick={() => setMenuOpen(prev => !prev)}
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile dropdown */}
       {menuOpen && (
-        <ul className="sm:hidden px-6 pb-4 flex flex-col gap-4 bg-[var(--background)]/95 backdrop-blur">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className="block text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors py-1"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+        <ul className="sm:hidden px-6 pb-4 flex flex-col gap-1 bg-[var(--background)]/95 backdrop-blur">
+          {navLinks.map(link => {
+            const isActive = activeId === link.id
+            return (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "block text-sm py-2 px-2 rounded-md transition-colors",
+                    isActive
+                      ? "text-[var(--foreground)] bg-[var(--muted)]"
+                      : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]",
+                  )}
+                >
+                  {link.label}
+                </a>
+              </li>
+            )
+          })}
           <li>
             <a
               href={portfolioData.resume}
               download
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2 text-sm font-medium py-1 transition-opacity hover:opacity-80"
-              style={{
-                background: "linear-gradient(90deg,#3b82f6,#a855f7,#ec4899,#a855f7,#3b82f6)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
+              className="inline-flex items-center gap-2 mt-2 px-3 py-2 rounded-md text-sm font-semibold text-white brand-gradient-bg"
             >
-              <Download className="w-4 h-4 shrink-0" style={{ color: "#a855f7" }} />
+              <Download className="w-4 h-4 shrink-0" />
               Download Resume
             </a>
           </li>
