@@ -10,15 +10,18 @@ import { SurfaceCard } from "@/components/ui/surface-card"
 // perimeter. Theme-aware frosted chips (.glass-badge). `mono` flags a near-black
 // brand mark (Next.js, WordPress, Elementor) that gets inverted to light in dark
 // mode so it stays visible on the dark chip.
-// Duda has no official SVG in Devicon/Simple Icons — drop the file at
-// public/brand/duda.svg and add a { src: "/brand/duda.svg", … mono: true } entry.
-const badges: { src: string; alt: string; pos: string; size: string; delay: string; mono?: boolean }[] = [
+// Duda is its official ORANGE full-color lockup (public/brand/duda.svg) — a wide
+// ~2.24:1 wordmark, NOT mono, so it uses a wider chip (w-20 h-11) and per-image
+// dimensions (imgW/imgH) instead of the square 26×26 default. Optional imgW/imgH
+// let a non-square mark render undistorted.
+const badges: { src: string; alt: string; pos: string; size: string; delay: string; mono?: boolean; imgW?: number; imgH?: number }[] = [
   { src: svgs.react, alt: "React", pos: "-top-5 -left-5", size: "w-14 h-14", delay: "0s" },
   { src: svgs.nextjs, alt: "Next.js", pos: "-top-6 right-10", size: "w-12 h-12", delay: "0.6s", mono: true },
   { src: "/brand/elementor.svg", alt: "Elementor", pos: "top-14 -right-6", size: "w-12 h-12", delay: "1.2s", mono: true },
   { src: svgs.typescript, alt: "TypeScript", pos: "-bottom-4 -right-5", size: "w-12 h-12", delay: "1.8s" },
   { src: "/brand/wordpress.svg", alt: "WordPress", pos: "-bottom-5 left-8", size: "w-12 h-12", delay: "2.4s", mono: true },
   { src: svgs.fastapi, alt: "FastAPI", pos: "top-1/2 -left-7", size: "w-12 h-12", delay: "3s" },
+  { src: "/brand/duda.svg", alt: "Duda", pos: "-bottom-6 left-1/2 -translate-x-1/2", size: "w-20 h-11", delay: "3.6s", imgW: 52, imgH: 23 },
 ]
 
 export default function ProfileCard() {
@@ -70,8 +73,8 @@ export default function ProfileCard() {
           <Image
             src={badge.src}
             alt=""
-            width={26}
-            height={26}
+            width={badge.imgW ?? 26}
+            height={badge.imgH ?? 26}
             loading="lazy"
             className={cn(badge.mono && "badge-mono-logo")}
           />
