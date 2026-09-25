@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Download, Menu, Moon, Sun, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { portfolioData } from "@/app/data"
+import { Logo } from "@/components/ui/logo"
 
 const navLinks = [
   { label: "About", href: "#about", id: "about" },
@@ -20,12 +21,11 @@ export function Navbar() {
   const [activeId, setActiveId] = useState<string>("about")
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme")
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    const isDark = stored ? stored === "dark" : prefersDark
-    setDark(isDark)
-    document.documentElement.classList.toggle("dark", isDark)
-    document.documentElement.classList.toggle("light", !isDark)
+    // The pre-paint script in layout.tsx already resolved and applied the theme
+    // to <html>; mirror that into React state. It can't run during SSR, so it
+    // must live in an effect rather than a state initializer.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDark(document.documentElement.classList.contains("dark"))
   }, [])
 
   const toggleTheme = () => {
@@ -76,21 +76,17 @@ export function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled || menuOpen
-          ? "bg-[var(--background)]/80 backdrop-blur border-b border-[var(--border)] shadow-sm"
+          ? "glass-nav shadow-sm"
           : "bg-transparent",
       )}
     >
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#about" className="flex items-center gap-2" aria-label="Home">
-          <span
-            aria-hidden="true"
-            className="w-7 h-7 rounded-lg brand-gradient-bg flex items-center justify-center text-white text-[11px] font-bold font-mono"
-          >
-            R
-          </span>
-          <span className="font-mono text-sm font-semibold tracking-tight">
-            roger<span className="brand-gradient-text">.dev</span>
-          </span>
+        <a
+          href="#about"
+          aria-label="Home"
+          className="group inline-flex items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+        >
+          <Logo />
         </a>
 
         {/* Desktop links */}
@@ -152,7 +148,7 @@ export function Navbar() {
       </nav>
 
       {menuOpen && (
-        <ul className="sm:hidden px-6 pb-4 flex flex-col gap-1 bg-[var(--background)]/95 backdrop-blur">
+        <ul className="sm:hidden px-6 pb-4 flex flex-col gap-1 glass-nav">
           {navLinks.map(link => {
             const isActive = activeId === link.id
             return (

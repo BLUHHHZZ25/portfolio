@@ -20,6 +20,7 @@ export function Projects() {
         {featured && (
           <SurfaceCard
             as="article"
+            data-reveal
             className="grid grid-cols-1 md:grid-cols-5 mb-6 group"
             hover={false}
           >
@@ -69,7 +70,7 @@ export function Projects() {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {rest.map(project => (
-            <SurfaceCard key={project.title} as="article" className="group flex flex-col">
+            <SurfaceCard key={project.title} as="article" data-reveal className="group flex flex-col">
               <div className="relative w-full h-48 overflow-hidden">
                 <Image
                   src={project.image}

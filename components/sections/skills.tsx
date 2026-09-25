@@ -72,7 +72,7 @@ export function Skills() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.map(([category, skills]) => (
-            <SurfaceCard key={category} padded className="relative" hover={false}>
+            <SurfaceCard key={category} data-reveal padded className="relative" hover={false}>
               <span
                 aria-hidden="true"
                 className="absolute top-0 left-6 right-6 h-[2px] rounded-full"

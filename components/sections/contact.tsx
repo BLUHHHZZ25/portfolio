@@ -1,7 +1,7 @@
 "use client"
 
 import Script from "next/script"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader2, Calendar } from "lucide-react"
 import { portfolioData } from "@/app/data"
 import { Button } from "@/components/ui/button"
@@ -19,14 +19,11 @@ export function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" })
   const [showCalendar, setShowCalendar] = useState(false)
 
-  const contactItems = useMemo(
-    () => [
-      { icon: Mail, label: "Email", value: portfolioData.email, href: `mailto:${portfolioData.email}` },
-      { icon: Phone, label: "Phone", value: portfolioData.phone, href: `tel:${portfolioData.phone}` },
-      { icon: MapPin, label: "Location", value: portfolioData.location, href: undefined },
-    ],
-    [],
-  )
+  const contactItems = [
+    { icon: Mail, label: "Email", value: portfolioData.email, href: `mailto:${portfolioData.email}` },
+    { icon: Phone, label: "Phone", value: portfolioData.phone, href: `tel:${portfolioData.phone}` },
+    { icon: MapPin, label: "Location", value: portfolioData.location, href: undefined },
+  ]
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -36,11 +33,12 @@ export function Contact() {
     e.preventDefault()
 
     if (!FORMSPREE_ID) {
-      // Mailto fallback
+      // Mailto fallback: hand off to the visitor's email client instead of
+      // claiming we sent anything. Clear our form once the handoff is triggered.
       const subject = encodeURIComponent(`Portfolio contact from ${form.name}`)
       const body = encodeURIComponent(`${form.message}\n\n— ${form.name} (${form.email})`)
       window.location.href = `mailto:${portfolioData.email}?subject=${subject}&body=${body}`
-      setStatus("success")
+      setForm({ name: "", email: "", message: "" })
       return
     }
 
@@ -140,7 +138,7 @@ export function Contact() {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Your name"
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3.5 py-2.5 text-sm placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
+                    className="w-full rounded-lg border border-[var(--border)] glass-input px-3.5 py-2.5 text-sm placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -155,7 +153,7 @@ export function Contact() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="your@email.com"
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3.5 py-2.5 text-sm placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
+                    className="w-full rounded-lg border border-[var(--border)] glass-input px-3.5 py-2.5 text-sm placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition"
                   />
                 </div>
               </div>
@@ -172,7 +170,7 @@ export function Contact() {
                   value={form.message}
                   onChange={handleChange}
                   placeholder="Tell me about your project or opportunity..."
-                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3.5 py-2.5 text-sm placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition resize-none"
+                  className="w-full rounded-lg border border-[var(--border)] glass-input px-3.5 py-2.5 text-sm placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition resize-none"
                 />
               </div>
 

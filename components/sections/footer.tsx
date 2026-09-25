@@ -1,5 +1,6 @@
 import { Github, Linkedin, Mail, ArrowUp } from "lucide-react"
 import { portfolioData } from "@/app/data"
+import { Logo } from "@/components/ui/logo"
 
 const footerLinks = [
   { label: "About", href: "#about" },
@@ -15,10 +16,8 @@ export function Footer() {
     <footer className="border-t border-[var(--border)] bg-[var(--muted)]/20">
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
-          <div className="space-y-1">
-            <span className="font-mono text-sm font-semibold tracking-tight">
-              roger<span className="brand-gradient-text">.dev</span>
-            </span>
+          <div className="space-y-2">
+            <Logo />
             <p className="text-xs text-[var(--muted-foreground)]">
               © {year} {portfolioData.name}. Built with Next.js, Tailwind, and shadcn/ui.
             </p>
