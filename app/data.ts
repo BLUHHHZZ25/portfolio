@@ -1,7 +1,7 @@
 export const portfolioData = {
   name: "Roger Moore A. Sangol",
   title: "Full-Stack Developer",
-  location: "Philippines Bagong Silang, Caloocan City",
+  location: "Bagong Silang, Caloocan City, Philippines",
   email: "rogermooresangol@gmail.com",
   phone: "+639935171690",
   calendly: "https://calendly.com/rogermooresangol",

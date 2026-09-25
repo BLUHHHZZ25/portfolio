@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og"
 import { portfolioData } from "./data"
+import { LOGO_R_PATH } from "@/lib/logo"
 
 export const alt = "Roger Moore Sangol — Full-Stack Developer"
 export const size = { width: 1200, height: 630 }
@@ -23,23 +24,24 @@ export default function OpengraphImage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
-              background: "linear-gradient(135deg, #3b82f6, #a855f7, #ec4899)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontSize: 28,
-              fontWeight: 700,
-              fontFamily: "monospace",
-            }}
-          >
-            R
-          </div>
+          <svg width="56" height="56" viewBox="0 0 32 32">
+            <defs>
+              <linearGradient id="b" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="50%" stopColor="#a855f7" />
+                <stop offset="100%" stopColor="#ec4899" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="32" height="32" rx="8" fill="url(#b)" />
+            <path
+              d={LOGO_R_PATH}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
           <div
             style={{
               fontSize: 24,

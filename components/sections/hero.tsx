@@ -1,12 +1,16 @@
 "use client"
 
+import { useRef } from "react"
+import gsap from "gsap"
+import { useGSAP } from "@gsap/react"
 import { Github, Mail, MapPin } from "lucide-react"
 import { portfolioData } from "@/app/data"
 import { Button } from "@/components/ui/button"
 import GradientText from "../ui/gradient-text"
 import { Particles } from "../ui/particles"
-import TextGenerateEffect from "../ui/generate-text-effect"
 import ProfileCard from "../ui/profile-card"
+
+gsap.registerPlugin(useGSAP)
 
 const socialLinks = [
   {
@@ -44,15 +48,43 @@ const socialLinks = [
 ]
 
 export function Hero() {
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // gsap.from runs inside useGSAP's layout effect, so the hidden start
+        // state is set before paint (no flash) and content stays visible if JS
+        // never runs. Plays once on mount.
+        gsap.from("[data-hero]", {
+          opacity: 0,
+          y: 24,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.12,
+          delay: 0.15,
+        })
+      })
+    },
+    { scope: rootRef },
+  )
+
   return (
-    <div className="relative">
+    <div className="relative overflow-x-clip">
       <div className="absolute inset-0 bg-dot-grid opacity-30 pointer-events-none" aria-hidden="true" />
       <Particles quantity={80}>
         <section id="about" className="min-h-screen flex items-center pt-16">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 md:py-24 w-full flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24">
+          <div
+            ref={rootRef}
+            className="max-w-5xl mx-auto px-4 sm:px-6 py-16 md:py-24 w-full flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24"
+          >
             <div className="space-y-6 order-2 md:order-1">
               {/* Availability pill */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--background)]/60 backdrop-blur text-xs text-[var(--muted-foreground)]">
+              <div
+                data-hero
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--background)]/60 backdrop-blur text-xs text-[var(--muted-foreground)]"
+              >
                 <span className="relative flex w-2 h-2">
                   <span className="absolute inset-0 rounded-full bg-emerald-400 pulse-dot" />
                   <span className="relative w-2 h-2 rounded-full bg-emerald-500" />
@@ -61,25 +93,28 @@ export function Hero() {
               </div>
 
               <div className="space-y-1">
-                <p className="text-sm font-mono text-[var(--primary)] tracking-widest uppercase">
+                <p data-hero className="text-sm font-mono text-[var(--primary)] tracking-widest uppercase">
                   Hello, I&apos;m
                 </p>
-                <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
+                <h1 data-hero className="text-5xl md:text-6xl font-bold tracking-tight">
                   <GradientText
                     className="text-5xl md:text-6xl font-bold tracking-tight"
                     text={portfolioData.name}
                   />
                 </h1>
-                <p className="text-2xl md:text-3xl text-[var(--muted-foreground)] font-light">
+                <p data-hero className="text-2xl md:text-3xl text-[var(--muted-foreground)] font-light">
                   {portfolioData.title}
                 </p>
               </div>
 
-              <div className="text-base text-[var(--muted-foreground)] max-w-xl leading-relaxed">
-                <TextGenerateEffect words={portfolioData.bio} />
-              </div>
+              <p data-hero className="text-base text-[var(--muted-foreground)] max-w-xl leading-relaxed">
+                {portfolioData.bio}
+              </p>
 
-              <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--muted-foreground)]">
+              <div
+                data-hero
+                className="flex flex-wrap items-center gap-4 text-sm text-[var(--muted-foreground)]"
+              >
                 <span className="flex items-center gap-1.5">
                   <MapPin className="w-4 h-4" />
                   {portfolioData.location}
@@ -90,7 +125,7 @@ export function Hero() {
                 </span>
               </div>
 
-              <div className="flex flex-wrap gap-3 pt-2">
+              <div data-hero className="flex flex-wrap gap-3 pt-2">
                 <Button asChild>
                   <a href="#contact">Get in touch</a>
                 </Button>
@@ -99,7 +134,7 @@ export function Hero() {
                 </Button>
               </div>
 
-              <div className="flex items-center gap-3 pt-1">
+              <div data-hero className="flex items-center gap-3 pt-1">
                 {socialLinks.map(({ label, href, icon }) => (
                   <a
                     key={label}
@@ -115,7 +150,7 @@ export function Hero() {
               </div>
             </div>
 
-            <div className="order-1 md:order-2 self-center">
+            <div data-hero className="order-1 md:order-2 self-center">
               <ProfileCard />
             </div>
           </div>

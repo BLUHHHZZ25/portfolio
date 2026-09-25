@@ -1,4 +1,5 @@
-const BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons"
+// Pinned to a released tag (not @latest) so a silent upstream rename can't break icons.
+const BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons"
 
 export const svgs = {
   javascript:  `${BASE}/javascript/javascript-original.svg`,

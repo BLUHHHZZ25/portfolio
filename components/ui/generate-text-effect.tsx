@@ -17,29 +17,28 @@ function TextGenerateEffect({
   className,
   filter = true,
   duration = 0.5,
-  staggerDelay = 0.2,
+  staggerDelay = 0.05,
   ...props
 }: TextGenerateEffectProps) {
   const localRef = React.useRef<HTMLDivElement>(null)
-  React.useImperativeHandle(ref as any, () => localRef.current as HTMLDivElement)
+  React.useImperativeHandle(ref, () => localRef.current as HTMLDivElement)
 
   const [scope, animate] = useAnimate()
   const wordsArray = React.useMemo(() => words.split(" "), [words])
 
   React.useEffect(() => {
-    if (scope.current) {
-      animate(
-        "span",
-        {
-          opacity: 1,
-          filter: filter ? "blur(0px)" : "none",
-        },
-        {
-          duration,
-          delay: stagger(staggerDelay),
-        },
-      )
-    }
+    if (!scope.current) return
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    animate(
+      "span",
+      {
+        opacity: 1,
+        filter: filter ? "blur(0px)" : "none",
+      },
+      reduced ? { duration: 0 } : { duration, delay: stagger(staggerDelay) },
+    )
   }, [animate, duration, filter, scope, staggerDelay])
 
   return (
@@ -47,12 +46,12 @@ function TextGenerateEffect({
       className={cn("font-bold", className)}
       data-slot="text-generate-effect"
       ref={localRef}
-      {...(props as any)}
+      {...props}
     >
       <motion.div ref={scope} suppressHydrationWarning>
         {wordsArray.map((word, idx) => (
           <motion.span
-            className="opacity-0 will-change-transform will-change-opacity will-change-filter"
+            className="opacity-0 will-change-[opacity,filter]"
             key={`${word}-${idx}`}
             style={{
               filter: filter ? "blur(10px)" : "none",

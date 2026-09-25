@@ -23,15 +23,21 @@ export function SectionHeading({
         className,
       )}
     >
-      <p className="text-xs font-mono text-[var(--primary)] tracking-[0.2em] uppercase mb-3 inline-flex items-center gap-2">
+      <p
+        data-reveal
+        className="text-xs font-mono text-[var(--primary)] tracking-[0.2em] uppercase mb-3 inline-flex items-center gap-2"
+      >
         <span className="h-px w-8 bg-[var(--primary)]/60" />
         {eyebrow}
       </p>
-      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+      <h2 data-reveal className="text-3xl md:text-4xl font-bold tracking-tight">
         {title}
       </h2>
       {description && (
-        <p className="text-[var(--muted-foreground)] mt-3 max-w-xl text-base leading-relaxed">
+        <p
+          data-reveal
+          className="text-[var(--muted-foreground)] mt-3 max-w-xl text-base leading-relaxed"
+        >
           {description}
         </p>
       )}

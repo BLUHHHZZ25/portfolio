@@ -115,8 +115,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full antialiased ${dmSans.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`h-full antialiased ${dmSans.variable}`}>
       <head>
+        {/* Set the theme class before first paint to avoid a flash of the wrong theme.
+            Mirrors the localStorage/prefers-color-scheme logic in navbar.tsx. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;var c=document.documentElement.classList;c.toggle("dark",d);c.toggle("light",!d);}catch(e){}})();`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

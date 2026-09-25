@@ -24,7 +24,7 @@ export function Experience() {
                 <Briefcase className="w-2.5 h-2.5 md:w-3 md:h-3 text-white" />
               </span>
 
-              <SurfaceCard padded hover={false}>
+              <SurfaceCard data-reveal padded hover={false}>
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                   <div>
                     <h3 className="text-lg font-bold leading-tight">{job.role}</h3>
@@ -70,7 +70,7 @@ export function Experience() {
                 <GraduationCap className="w-2.5 h-2.5 md:w-3 md:h-3 text-[var(--primary)]" />
               </span>
 
-              <SurfaceCard padded hover={false}>
+              <SurfaceCard data-reveal padded hover={false}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <h3 className="text-base font-bold leading-tight">{edu.degree}</h3>
